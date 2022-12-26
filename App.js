@@ -1,20 +1,49 @@
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, Text, View, ScrollView } from 'react-native';
+import { useState, useEffect } from 'react';
+import XMLParser from 'react-xml-parser';
 
-export default function App() {
+const App = () => {
+  const [posts, setPosts] = useState([]);
+
+  useEffect(() => {
+    fetch('https://medium.com/feed/@thespacesmag')
+    .then(response => response.text())
+    .then(feed => {
+      // xml feed to json
+      let xmlFeed = new XMLParser().parseFromString(feed);
+      xmlFeed = xmlFeed.children[0].children;
+
+      // get posts from feed
+      let newPosts = [];
+      xmlFeed
+        .filter(element => element.name === 'item')
+        .forEach(post => {
+          let attributes = post.children;
+          let newPost = {
+            title: attributes[0]?.value,
+            content: attributes[attributes.length-1]?.value
+          };
+          newPosts.push(newPost);
+        })
+      setPosts(newPosts);
+    })
+    .catch(err => {
+      console.error(err);
+    })
+  }, []);
+
   return (
-    <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
+    <ScrollView>
+      <Text>React Native App!</Text>
+      {posts.map((post, index) => 
+        <View key={index}>
+          <Text>{post.title}</Text>
+        </View>
+      )}
       <StatusBar style="auto" />
-    </View>
+    </ScrollView>
   );
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
+export default App;
