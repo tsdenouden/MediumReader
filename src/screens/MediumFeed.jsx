@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { StyleSheet, Text, View, ScrollView } from "react-native";
+import { StyleSheet, Text, ScrollView, TextInput } from "react-native";
 import FetchPosts from "../services/FetchPosts";
 import Post from "../components/Post";
 
@@ -14,10 +14,17 @@ const MediumFeed = () => {
       .catch((err) => {
         console.log(err);
       });
-  }, []);
+  }, [author]);
 
   return (
     <ScrollView>
+      <TextInput
+        style={styles.header}
+        placeholder="Enter Medium User:"
+        onSubmitEditing={(e) => {
+          setAuthor(e.nativeEvent.text);
+        }}
+      />
       <Text style={styles.header}>@{author}</Text>
       {posts.map((post, index) => (
         <Post title={post.title} content={post.content} key={index} />
@@ -30,6 +37,8 @@ const styles = StyleSheet.create({
   header: {
     fontSize: 30,
     fontFamily: "monospace",
+    paddingTop: 15,
+    paddingLeft: 10,
   },
 });
 

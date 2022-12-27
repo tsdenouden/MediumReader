@@ -29,20 +29,31 @@ const Post = ({ title, content }) => {
         }}
       >
         <ScrollView>
-          <Pressable
-            onPress={() => {
-              setModalVisible(false);
-            }}
-          >
-            <Text>Back</Text>
-          </Pressable>
-          <RenderHtml
-            contentWidth={width}
-            source={source}
-            ignoredDomTags={["iframe"]}
-          />
+          <View style={styles.content}>
+            <Pressable
+              onPress={() => {
+                setModalVisible(false);
+              }}
+            >
+              <Text style={styles.backButton}>Back</Text>
+            </Pressable>
+            <Text style={styles.title}>{title}</Text>
+            <RenderHtml
+              contentWidth={width}
+              source={source}
+              ignoredDomTags={["iframe"]}
+            />
+            <Pressable
+              onPress={() => {
+                setModalVisible(false);
+              }}
+            >
+              <Text style={styles.backButton}>Back</Text>
+            </Pressable>
+          </View>
         </ScrollView>
       </Modal>
+
       <TouchableOpacity
         style={styles.container}
         onPress={() => {
@@ -65,6 +76,20 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     fontSize: 20,
     marginVertical: 10,
+  },
+  backButton: {
+    color: "rgb(73, 74, 74)",
+    fontWeight: "bold",
+    fontSize: 20,
+    marginBottom: 20,
+  },
+  title: {
+    fontWeight: "bold",
+    fontSize: 30,
+  },
+  content: {
+    backgroundColor: "whitesmoke",
+    padding: 20,
   },
 });
 
