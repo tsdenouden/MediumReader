@@ -1,0 +1,7 @@
+expo
+assets
+node_modules
+babel.config.js
+*.gitignore
+*.json
+*.md
